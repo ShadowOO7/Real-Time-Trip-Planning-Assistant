@@ -1,40 +1,47 @@
-import Trip from '../models/Trip.js';
-import Item from '../models/Item.js';
-import createError from 'http-errors';
+import Trip from "../models/Trip.js";
 
-function randomCode() {
-  return Math.random().toString(36).slice(2, 8).toUpperCase();
-}
-
-export async function createTrip(req, res, next) {
+// Create trip
+export const createTrip = async (req, res) => {
   try {
-    const { name, ownerName } = req.body;
-    if (!name || !ownerName) throw createError(400, 'name and ownerName required');
-    const shareCode = randomCode();
-    const trip = await Trip.create({ name, ownerName, shareCode, members: [ownerName] });
+    const trip = await Trip.create({ ...req.body, user: req.user.id });
+    res.status(201).json(trip);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// Get all user trips
+export const getTrips = async (req, res) => {
+  try {
+    const trips = await Trip.find({ user: req.user.id }).sort({ createdAt: -1 });
+    res.json(trips);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Update trip
+export const updateTrip = async (req, res) => {
+  try {
+    const trip = await Trip.findOneAndUpdate(
+      { _id: req.params.id, user: req.user.id },
+      req.body,
+      { new: true }
+    );
+    if (!trip) return res.status(404).json({ error: "Trip not found" });
     res.json(trip);
-  } catch (e) { next(e); }
-}
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 
-export async function joinTrip(req, res, next) {
+// Delete trip
+export const deleteTrip = async (req, res) => {
   try {
-    const { shareCode, memberName } = req.body;
-    const trip = await Trip.findOne({ shareCode });
-    if (!trip) throw createError(404, 'Trip not found');
-    if (!trip.members.includes(memberName)) {
-      trip.members.push(memberName);
-      await trip.save();
-    }
-    res.json(trip);
-  } catch (e) { next(e); }
-}
-
-export async function getTrip(req, res, next) {
-  try {
-    const { tripId } = req.params;
-    const trip = await Trip.findById(tripId);
-    if (!trip) throw createError(404, 'Trip not found');
-    const items = await Item.find({ tripId }).sort({ orderIndex: 1, createdAt: 1 });
-    res.json({ trip, items });
-  } catch (e) { next(e); }
-}
+    const trip = await Trip.findOneAndDelete({ _id: req.params.id, user: req.user.id });
+    if (!trip) return res.status(404).json({ error: "Trip not found" });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

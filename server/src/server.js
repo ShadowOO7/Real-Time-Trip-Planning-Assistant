@@ -1,41 +1,32 @@
-import http from "http";
-import { Server } from "socket.io";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
-import app from "./app.js";
-import initSockets from "./sockets/index.js";
+import dotenv from 'dotenv';
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import tripRoutes from "./routes/trip.js";
+
+import authRoutes from './routes/auth.js';  // ✅ make sure this file exists
 
 dotenv.config();
-const PORT = process.env.PORT || 4000;
-const server = http.createServer(app);
+const app = express();
 
-// --- MongoDB connection (Mongoose) ---
-// Old behavior (Atlas-only): connect only if MONGODB_URI set
-// if (!process.env.MONGODB_URI) {
-//   console.warn("⚠️  MONGODB_URI is not set. The server will start, but DB operations will fail.");
-// } else {
-//   mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 })
-//     .then(() => console.log("✅ Connected to MongoDB via Mongoose"))
-//     .catch((err) => console.error("❌ MongoDB connection error:", err));
-// }
+app.use(cors());
+app.use(express.json());
+app.use("/api/trips", tripRoutes);
 
-// New behavior: fall back to system/local MongoDB if MONGODB_URI is not provided
-const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/realtime-trip-planner';
-mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 10000 })
-  .then(() => console.log(`✅ Connected to MongoDB via Mongoose (${process.env.MONGODB_URI ? 'env URI' : 'local fallback'})`))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+// Routes
+app.use('/api/auth', authRoutes);  // ✅ auth endpoints
 
-// --- Socket.IO setup ---
-const io = new Server(server, {
-  cors: {
-    origin: process.env.CORS_ORIGINS?.split(",") || "*",
-    methods: ["GET", "POST"],
-  },
+// Health check
+app.get('/', (req, res) => {
+  res.send('API is running...');
 });
-// make io available to express routes/controllers
-app.set('io', io);
-initSockets(io);
 
-server.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+const PORT = process.env.PORT || 5000;
+
+// MongoDB Connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+}).catch(err => console.error('❌ MongoDB connection error:', err));

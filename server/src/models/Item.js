@@ -12,6 +12,7 @@ const ItemSchema = new mongoose.Schema({
   end: { type: Date },
   cost: { type: Number, default: 0 },
   orderIndex: { type: Number, default: 0 },
+  status: { type: String, enum: ['proposed','planned','next','visited'], default: 'planned' },
   metadata: { type: Object }
 }, { timestamps: true });
 

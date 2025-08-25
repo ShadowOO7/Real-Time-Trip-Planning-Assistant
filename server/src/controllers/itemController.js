@@ -6,7 +6,7 @@ import { geocode } from '../services/geocode.js';
 export async function addItem(req, res, next) {
   try {
     const { tripId } = req.params;
-    const { type, title, notes, address, lat, lng, start, end, cost } = req.body;
+    const { type, title, notes, address, lat, lng, start, end, cost, status } = req.body;
     const trip = await Trip.findById(tripId);
     if (!trip) throw createError(404, 'Trip not found');
 
@@ -23,7 +23,8 @@ export async function addItem(req, res, next) {
     const item = await Item.create({
       tripId, type, title, notes, address: resolvedAddress,
       lat: position.lat, lng: position.lng,
-      start, end, cost, orderIndex
+      start, end, cost, orderIndex,
+      status: status || 'planned'
     });
 
     req.io.to(`trip:${tripId}`).emit('item:added', item);
@@ -55,7 +56,7 @@ export async function deleteItem(req, res, next) {
 export async function reorderItems(req, res, next) {
   try {
     const { tripId } = req.params;
-    const { order } = req.body; // array of itemIds in new order
+    const { order } = req.body;
     const items = await Item.find({ tripId });
     const map = new Map(order.map((id, idx) => [id, idx]));
     await Promise.all(items.map(i => {

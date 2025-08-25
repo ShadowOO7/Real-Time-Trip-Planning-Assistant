@@ -7,6 +7,7 @@ export default function ItemForm({ onAdd }) {
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [cost, setCost] = useState(0);
+  const [status, setStatus] = useState('planned');
 
   return (
     <div className="item">
@@ -24,8 +25,16 @@ export default function ItemForm({ onAdd }) {
       <div className="row">
         <input type="datetime-local" value={start} onChange={e=>setStart(e.target.value)} />
         <input type="datetime-local" value={end} onChange={e=>setEnd(e.target.value)} />
-        <input type="number" value={cost} onChange={e=>setCost(parseFloat(e.target.value))} placeholder="Cost" style={{width:120}}/>
-        <button onClick={()=>onAdd({type,title,address,start,end,cost})}>Add to itinerary</button>
+        <input type="number" value={cost} onChange={e=>setCost(parseFloat(e.target.value || '0'))} placeholder="Cost" style={{width:100}}/>
+      </div>
+      <div className="row" style={{marginTop:6}}>
+        <select value={status} onChange={e=>setStatus(e.target.value)}>
+          <option value="proposed">Proposed</option>
+          <option value="next">Next</option>
+          <option value="planned">Planned</option>
+          <option value="visited">Visited</option>
+        </select>
+        <button onClick={()=>onAdd({type,title,address,start,end,cost,status})}>Add</button>
       </div>
     </div>
   );

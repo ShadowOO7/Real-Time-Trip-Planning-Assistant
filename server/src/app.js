@@ -5,6 +5,7 @@ import compression from 'compression';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import tripRoutes from "./routes/trip.js";
 import routes from './routes/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,6 +23,9 @@ app.use(cors({
   credentials: true
 }));
 app.set('etag', false);
+
+//Trip routes
+app.use("/api/trips", tripRoutes);
 
 // API Routes
 app.use('/api', routes);

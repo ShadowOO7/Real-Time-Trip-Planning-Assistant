@@ -1,80 +1,116 @@
-# Real-Time Trip Planning Assistant (MERN + OSM)
+# Real-Time Trip Planner
 
-A collaborative travel planner where a group can build and edit an itinerary together. Real-time updates (Socket.IO), OpenStreetMap (Leaflet + Nominatim), and OSRM routing. Includes a simple itinerary optimizer (nearest-neighbor with OSRM/table or Haversine fallback).
+A collaborative **real-time travel planning assistant** built with the **MERN stack (MongoDB, Express, React, Node.js)**, featuring group itineraries, live updates, and integrated travel tools.
 
-## Tech Stack
-- **MERN**: MongoDB Atlas, Express, React (Vite), Node.js
-- **Real-time**: Socket.IO
-- **Maps**: Leaflet with OpenStreetMap tiles
-- **Geocoding**: Nominatim (OpenStreetMap)
-- **Routing**: OSRM (public endpoint or self-hosted), with fallback to Haversine
-- **Architecture**: MVC
-- **Deployment**: Render (single service) or Fly.io (Dockerfile)
-  
-## Project Structure
+---
+
+## 🚀 Features
+
+### 🌍 Core Features
+- **Real-Time Itinerary Building**: Collaboratively add/edit destinations, accommodations, and activities with instant sync via **Socket.IO**.
+- **OpenStreetMap Integration**: Interactive maps without relying on Google Maps APIs.
+- **Group Travel Optimization**: AI-based optimization (Python/Node.js service) using algorithms like **Dijkstra/Genetic Algorithm** to minimize cost and time.
+
+### 🔐 User System
+- **Login/Logout** with JWT authentication.
+- **Invite Friends to Trips** – create a trip, invite members, and collaborate.
+
+### 🏠 Home Page
+- **Slideshow** of beautiful images (mountains, valleys, rivers, hills, cities).
+
+### ℹ️ About Page
+- Displays project information including:
+  - Owner: **Shekhar Nayak**
+  - Dummy License Number: `ABC-123456`
+  - Contact Email: `shekharnayak.dev@example.com`
+
+### 👥 Trip Collaboration
+- **Trip Creation & Management** – set trip name and invite friends.
+- **Group Chat Section** – real-time communication during planning.
+- **Visited & Next Destination Tracking** – update destinations as you travel.
+
+### 🤖 AI Suggestions
+- **AI Travel Assistant** that suggests **10 best places to visit** around your next destination.
+
+---
+
+## 🛠️ Tech Stack
+- **Frontend**: React, TailwindCSS, Socket.IO Client, React Router
+- **Backend**: Node.js, Express.js, Socket.IO, JWT Auth
+- **Database**: MongoDB Atlas (via Mongoose)
+- **Map**: OpenStreetMap (Leaflet.js)
+- **AI Service**: Python/Node.js microservice for recommendations
+
+---
+
+## 📂 Project Structure
 ```
 realtime-trip-planner/
-  server/
-    src/
-      app.js, server.js
-      config/db.js
-      controllers/*.js
-      models/*.js
-      routes/*.js
-      services/{geocode.js,routing.js,optimizer.js}
-      sockets/index.js
-      middleware/auth.js
-    package.json
-    Dockerfile
-    .env.example
-  client/ (Vite + React)
-    src/
-      main.jsx, App.jsx
-      components/*.jsx
-      api/http.js
-      store/tripStore.js
-    package.json
-    vite.config.js
-    index.html
-    .env.example
-render.yaml
-README.md
-docs/Setup.pdf
+├── client/                  # React frontend
+│   ├── src/
+│   │   ├── components/      # Slideshow, Chat, Suggestions, Trip features
+│   │   ├── pages/           # Home, About, Login, Trips
+│   │   └── App.js
+├── server/                  # Express backend
+│   ├── src/
+│   │   ├── models/          # User, Trip, Message models (Mongoose)
+│   │   ├── routes/          # Auth, Trip, Suggestion routes
+│   │   ├── sockets/         # Real-time chat and trip updates
+│   │   └── server.js
+├── .env                     # Environment variables
+├── README.md
+└── package.json
 ```
 
-## Quick Start (Local)
-1. **MongoDB**: Create a free cluster on MongoDB Atlas. Get the connection string.
-2. **Env**: Copy `server/.env.example` to `server/.env` and fill values.
-3. **Install**:
-   ```bash
-   cd realtime-trip-planner
-   npm run install:all
-   ```
-4. **Dev** (concurrently build client once, then run server + socket):
-   ```bash
-   # build client
-   npm run build
-   # run api/socket (serves built client)
-   npm run dev
-   ```
-5. Open http://localhost:4000
+---
 
-## Deployment (Render)
-- Create a **Web Service** with root set to `/server`
-- Build Command: `npm run build:client`
-- Start Command: `npm start`
-- Add env vars from `.env.example`
+## ⚙️ Setup Instructions
 
-## Deployment (Fly.io)
-- From repo root:
-  ```bash
-  fly launch --path server --copy-config --no-deploy
-  fly secrets set MONGODB_URI=... JWT_SECRET=... OSRM_URL=https://router.project-osrm.org NOMINATIM_URL=https://nominatim.openstreetmap.org NOMINATIM_EMAIL=you@example.com
-  fly deploy --path server
-  ```
+### 1️⃣ Clone the Repo
+```bash
+git clone https://github.com/your-username/realtime-trip-planner.git
+cd realtime-trip-planner
+```
 
-## Notes on Nominatim Usage
-Respect Nominatim usage policy: include a proper User-Agent and email, and throttle requests. For production, consider a provider like OpenCage or a self-hosted Nominatim.
+### 2️⃣ Install Dependencies
+```bash
+# For backend
+cd server
+npm install
 
-## AI Optimization
-The optimizer in `server/src/services/optimizer.js` computes a near-greedy route using OSRM travel times. If OSRM is unavailable, it falls back to Haversine-based nearest neighbor.
+# For frontend
+cd ../client
+npm install
+```
+
+### 3️⃣ Setup Environment Variables
+Create a `.env` file in `/server` with:
+```env
+PORT=4000
+MONGODB_URI="your-mongodb-atlas-uri"
+JWT_SECRET="your-secret-key"
+CORS_ORIGINS="http://localhost:3000"
+```
+
+### 4️⃣ Run the App
+```bash
+# Start backend
+cd server
+npm run dev
+
+# Start frontend
+cd ../client
+npm start
+```
+
+### 5️⃣ Deployment
+- Deploy backend on **Render/Fly.io**
+- Deploy frontend on **Vercel/Netlify**
+- Use **MongoDB Atlas** for free cloud database.
+
+---
+
+## 📧 Contact
+**Owner**: Shekhar Nayak  
+**Email**: shekharnayak.dev@example.com  
+**License**: Dummy License No. `ABC-123456`
