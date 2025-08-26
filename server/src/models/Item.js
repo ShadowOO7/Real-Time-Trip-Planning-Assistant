@@ -2,7 +2,12 @@ import mongoose from 'mongoose';
 
 const ItemSchema = new mongoose.Schema({
   tripId: { type: mongoose.Schema.Types.ObjectId, ref: 'Trip', required: true },
-  type: { type: String, enum: ['destination','accommodation','activity'], required: true },
+  type: { 
+    type: String, 
+    enum: ['destination','accommodation','activity'], 
+    required: true,
+    default: 'destination'
+  },
   title: { type: String, required: true },
   notes: { type: String },
   address: { type: String },

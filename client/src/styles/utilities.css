@@ -1,0 +1,107 @@
+/* Minimal utility styles to mimic used Tailwind classes (home/navbar) */
+
+/* Layout */
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.flex-grow { flex: 1 1 auto; }
+.flex-shrink-0 { flex-shrink: 0; }
+.container { max-width: 1280px; margin-left: auto; margin-right: auto; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.px-8 { padding-left: 2rem; padding-right: 2rem; }
+.pl-16 { padding-left: 4rem; }
+.px-12 { padding-left: 3rem; padding-right: 3rem; }
+.mt-16 { margin-top: 4rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
+.gap-12 { gap: 3rem; }
+
+/* Widths */
+.w-full { width: 100%; }
+.w-1\/3 { width: 33.333333%; }
+.w-2\/3 { width: 66.666667%; }
+.max-w-7xl { max-width: 80rem; }
+.max-w-2xl { max-width: 42rem; }
+.max-w-md { max-width: 28rem; }
+
+/* Sizing */
+.h-16 { height: 4rem; }
+.min-h-\[calc\(100vh-4rem\)\] { min-height: calc(100vh - 4rem); }
+
+/* Typography */
+.text-5xl { font-size: 3rem; line-height: 1.1; }
+.font-bold { font-weight: 700; }
+.leading-tight { line-height: 1.05; }
+.text-xl { font-size: 1.125rem; }
+.text-lg { font-size: 1.125rem; }
+.text-2xl { font-size: 1.5rem; }
+.text-gray-600 { color: #4b5563; }
+.text-gray-900 { color: #111827; }
+.text-blue-600 { color: #2563eb; }
+.text-white { color: #ffffff; }
+
+/* Spacing */
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-10 { margin-bottom: 2.5rem; }
+.mb-12 { margin-bottom: 3rem; }
+
+/* Backgrounds/borders/shadows */
+.bg-gray-50 { background-color: #f9fafb; }
+.bg-white { background-color: #ffffff; }
+.bg-blue-600 { background-color: #2563eb; }
+.border-b { border-bottom: 1px solid #e5e7eb; }
+.border-2 { border-width: 2px; }
+.border-blue-600 { border-color: #2563eb; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-full { border-radius: 9999px; }
+.shadow-lg { box-shadow: 0 10px 30px rgba(2,6,23,0.08); }
+.shadow { box-shadow: 0 6px 18px rgba(2,6,23,0.08); }
+
+/* Buttons/padding */
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.px-8 { padding-left: 2rem; padding-right: 2rem; }
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.p-2 { padding: 0.5rem; }
+
+/* Utilities */
+.hidden { display: none; }
+.md\:flex { display: flex; }
+.transition { transition: all 0.2s ease; }
+.transition-colors { transition: color 0.15s ease, background-color 0.15s ease; }
+.duration-200 { transition-duration: 200ms; }
+.hover\:bg-blue-700:hover { background-color: #1d4ed8; }
+.hover\:bg-blue-700:hover { background-color: #1d4ed8; }
+.hover\:bg-blue-50:hover { background-color: #eff6ff; }
+.hover\:text-blue-600:hover { color: #2563eb; }
+
+/* z-index / positioning */
+.fixed { position: fixed; }
+.top-0 { top: 0; }
+.z-50 { z-index: 50; }
+
+/* Misc */
+.text-center { text-align: center; }
+.max-w-7xl { max-width: 1120px; }
+
+/* Specific helper for calc-based min-height used earlier */
+.min-h-calc-navbar { min-height: calc(100vh - 4rem); }
+
+/* Make images responsive inside slideshow */
+img { max-width: 100%; height: auto; display: block; }
+
+/* Ensure links look clickable */
+a { color: inherit; text-decoration: none; }
+
+/* small responsive tweak */
+@media (max-width: 768px) {
+  .hidden.md\:flex { display: none; }
+  .w-1\/3 { width: 40%; }
+  .w-2\/3 { width: 60%; }
+  .pl-16 { padding-left: 1rem; }
+  .px-12 { padding-left: 1rem; padding-right: 1rem; }
+}

@@ -2,7 +2,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import tripRoutes from "./routes/trip.js";
+import tripRoutes from "./routes/trips.js";
+import { initSockets } from "./sockets/index.js";
 
 import authRoutes from './routes/auth.js';  // ✅ make sure this file exists
 
@@ -21,12 +22,18 @@ app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 9000;
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
 }).then(() => {
+  console.log('✅ Connected to MongoDB');
   app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
-}).catch(err => console.error('❌ MongoDB connection error:', err));
+}).catch(err => {
+  console.error('❌ MongoDB connection error:', err);
+  process.exit(1);
+});

@@ -13,50 +13,61 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center shadow-md">
-      {/* Left side */}
-      <div className="flex space-x-6">
-        <Link to="/" className="hover:text-yellow-400 transition">
-          Home
-        </Link>
-        <Link to="/about" className="hover:text-yellow-400 transition">
-          About
-        </Link>
-        {token && (
-          <Link to="/planner" className="hover:text-yellow-400 transition">
-            Planner
+    <nav className="bg-white fixed w-full top-0 z-50 border-b">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2">
+            <span className="text-2xl font-bold text-blue-600">✈️ RTP</span>
           </Link>
-        )}
-      </div>
 
-      {/* Right side */}
-      <div className="flex items-center space-x-4">
-        {!token ? (
-          <>
-            <Link
-              to="/login"
-              className="px-3 py-1 rounded bg-blue-600 hover:bg-blue-700 transition"
-            >
-              Login
+          {/* Navigation Links */}
+          <div className="hidden md:flex items-center gap-8">
+            <Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+              Home
             </Link>
-            <Link
-              to="/register"
-              className="px-3 py-1 rounded bg-green-600 hover:bg-green-700 transition"
-            >
-              Register
+            <Link to="/about" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+              About
             </Link>
-          </>
-        ) : (
-          <>
-            <span className="text-gray-300">Hi, {user?.name || "Traveler"}</span>
-            <button
-              onClick={handleLogout}
-              className="px-3 py-1 rounded bg-red-600 hover:bg-red-700 transition"
-            >
-              Logout
-            </button>
-          </>
-        )}
+            {token && (
+              <Link to="/planner" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                Trip Planner
+              </Link>
+            )}
+          </div>
+
+          {/* Auth Buttons */}
+          <div className="flex items-center gap-4">
+            {!token ? (
+              <>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 text-blue-600 hover:text-blue-700 transition-colors duration-200"
+                >
+                  Sign in
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+                >
+                  Get Started
+                </Link>
+              </>
+            ) : (
+              <div className="flex items-center gap-4">
+                <span className="text-gray-600">
+                  Welcome, {user?.name || "Traveler"}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                >
+                  Sign out
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </nav>
   );

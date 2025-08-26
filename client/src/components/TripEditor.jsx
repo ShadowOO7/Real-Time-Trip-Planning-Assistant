@@ -4,26 +4,50 @@ import api from '../api/http';
 import ItemForm from './ItemForm';
 import MapView from './MapView';
 import RouteSummary from './RouteSummary';
+import LoadingState from './common/LoadingState';
+import ErrorDisplay from './common/ErrorDisplay';
+import Toast from './common/Toast';
 import RealtimePresence from './RealtimePresence';
 import ChatPanel from './chat/ChatPanel';
 import SuggestionPanel from './suggestions/SuggestionPanel';
+import { useAuthStore } from '../stores/auth';
 
 let socket;
 
 export default function TripEditor({ trip }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!trip?._id) return;
-    (async () => {
+    
+    const loadTrip = async () => {
       setLoading(true);
-      const { data } = await api.get(`/trips/${trip._id}`);
-      setItems(data.items || []);
-      setLoading(false);
-    })();
+      setError(null);
+      try {
+        const { data } = await api.get(`/trips/${trip._id}`);
+        setItems(data.items || []);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (!socket) socket = io('/', { path: '/socket.io' });
+    loadTrip();
+
+    if (!socket) {
+      const baseUrl = import.meta.env.VITE_API_BASE?.replace('/api', '') || '';
+      socket = io(baseUrl, { 
+        path: '/socket.io',
+        auth: {
+          token: useAuthStore.getState().token
+        }
+      });
+    }
     socket.emit('join-trip', trip._id);
     socket.on('item:added', (item) => {
       if (item.tripId === trip._id) setItems(prev => [...prev, item].sort((a,b)=>a.orderIndex-b.orderIndex));
@@ -71,10 +95,10 @@ export default function TripEditor({ trip }) {
 
   if (!trip) return <div style={{padding:16}}>Create or join a trip to begin.</div>;
 
-  const byStatus = (s) => (items||[]).filter(i => (i.status || 'planned') === s);
-  const setStatus = (id, status) => updateItem(id, { status });
-
-  const inviteLink = `${window.location.origin}/login?code=${trip.shareCode}`;
+  return (
+    <LoadingState isLoading={loading} error={error}>
+      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
+      <div style={{display:'flex', flexDirection:'column', height:'100%'}}>
 
   return (
     <div style={{display:'flex', flexDirection:'column', height:'100%'}}>

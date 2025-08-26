@@ -4,9 +4,16 @@ import Trip from "../models/Trip.js";
 export const createTrip = async (req, res) => {
   try {
     const trip = await Trip.create({ ...req.body, user: req.user.id });
-    res.status(201).json(trip);
+    res.status(201).json({
+      success: true,
+      data: trip,
+      message: 'Trip created successfully'
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({
+      success: false,
+      error: err.message
+    });
   }
 };
 

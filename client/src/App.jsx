@@ -2,6 +2,9 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import "./styles/app.css";
+import "./styles/animations.css";
+import "./styles/utilities.css";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Planner from "./pages/Planner";
@@ -13,9 +16,12 @@ export default function App() {
   const { token } = useAuthStore();
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
+      {/* Navbar always visible */}
       <Navbar />
-      <main className="flex-1 p-4">
+
+      {/* Add padding-top = navbar height */}
+      <main className="app-container pt-16">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
