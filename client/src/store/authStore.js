@@ -2,14 +2,47 @@
 import { create } from "zustand";
 import api from "../api/http";
 
+// Helper to save auth state to localStorage
+const saveAuthToStorage = (token, user) => {
+  localStorage.setItem("auth", JSON.stringify({ token, user }));
+};
+
 export const useAuthStore = create((set, get) => ({
   token: null,
   user: null,
 
-  // --- Login handler ---
-  login: (token, user) => {
-    set({ token, user });
-    localStorage.setItem("auth", JSON.stringify({ token, user }));
+  // --- Login: API call and state update ---
+  login: async (email, password) => {
+    try {
+      const response = await api.post("/auth/login", { email, password });
+      if (response.data && response.data.token) {
+        const { token, user } = response.data;
+        set({ token, user });
+        saveAuthToStorage(token, user);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Login failed:", error);
+      return false;
+    }
+  },
+
+  // --- Register: API call and state update ---
+  register: async (name, email, password) => {
+    try {
+      const response = await api.post("/auth/register", { name, email, password });
+      if (response.data && response.data.token) {
+        const { token, user } = response.data;
+        set({ token, user });
+        saveAuthToStorage(token, user);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Registration failed:", error);
+      return false;
+    }
   },
 
   // --- Load auth from storage ---
@@ -17,7 +50,9 @@ export const useAuthStore = create((set, get) => ({
     const saved = localStorage.getItem("auth");
     if (saved) {
       const { token, user } = JSON.parse(saved);
-      set({ token, user });
+      if (token && user) {
+        set({ token, user });
+      }
     }
   },
 
@@ -36,3 +71,6 @@ export const useAuthStore = create((set, get) => ({
     localStorage.removeItem("auth");
   },
 }));
+
+// Initialize auth state from localStorage on app startup
+useAuthStore.getState().loadAuth();

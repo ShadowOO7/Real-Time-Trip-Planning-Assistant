@@ -16,12 +16,12 @@ export default function App() {
   const { token } = useAuthStore();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
       {/* Navbar always visible */}
       <Navbar />
 
       {/* Add padding-top = navbar height */}
-      <main className="app-container pt-16">
+      <main className="app-container">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -39,6 +39,6 @@ export default function App() {
           />
         </Routes>
       </main>
-    </div>
+    </>
   );
 }

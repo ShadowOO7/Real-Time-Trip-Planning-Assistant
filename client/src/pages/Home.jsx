@@ -11,22 +11,22 @@ export default function Home() {
   ];
   return (
     <div className="container mx-auto flex items-center justify-center min-h-[calc(100vh-4rem)] bg-gray-50">
-      <div className="flex items-center gap-12 px-8 max-w-7xl w-full">
+      <div className="flex flex-col md:flex-row items-center gap-12 px-8 max-w-7xl w-full">
         {/* Left: slideshow */}
-        <div className="w-1/3 flex-shrink-0">
-          <Slideshow images={images} interval={3000} height="350px" />
+        <div className="w-full md:w-1/2 lg:w-1/3 flex-shrink-0">
+          <Slideshow images={images} interval={3000} />
         </div>
 
         {/* Right: text + buttons */}
-        <div className="w-2/3 flex-grow">
-          <h1 className="text-5xl font-bold mb-6 leading-tight text-gray-900">
+        <div className="w-full md:w-1/2 lg:w-2/3 flex-grow text-center md:text-left">
+          <h1 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight text-gray-900">
             Plan trips together in <span className="text-blue-600">real-time</span>
           </h1>
-          <p className="text-xl mb-10 text-gray-600 max-w-2xl">
+          <p className="text-lg lg:text-xl mb-10 text-gray-600 max-w-2xl mx-auto md:mx-0">
             Collaborative itineraries, live chat, proposals, suggestions & more.
           </p>
 
-          <div className="flex gap-6">
+          <div className="flex gap-6 justify-center md:justify-start">
             <Link
               to="/login"
               className="bg-blue-600 text-white px-8 py-3 rounded-xl shadow-lg hover:bg-blue-700 transition-colors duration-200"

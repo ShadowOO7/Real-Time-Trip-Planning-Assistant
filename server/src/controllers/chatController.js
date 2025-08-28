@@ -1,5 +1,5 @@
 import ChatMessage from "../models/ChatMessage.js";
-import createError from "http-errors";
+
 
 export async function getMessages(req, res, next) {
   try {

@@ -18,7 +18,7 @@ export async function optimizeOrder(items) {
   try {
     const table = await travelTimesMatrix(coords);
     matrix = table?.durations;
-  } catch (e) {
+  } catch (_e) {
     // Fallback to distance in seconds approximation (distance/15m/s ~ 54km/h)
     const n = coords.length;
     matrix = Array.from({length: n}, () => Array(n).fill(0));

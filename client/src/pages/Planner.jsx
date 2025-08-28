@@ -17,6 +17,7 @@ export default function Planner() {
   }, []);
 
   async function handleAddTrip(newTrip) {
+    // newTrip now contains title, items[], startDate, endDate
     const trip = await createTrip(newTrip);
     setTrips([trip, ...trips]);
     setIsAddOpen(false);
@@ -50,7 +51,16 @@ export default function Planner() {
         {trips.map(trip => (
           <div key={trip._id} className="bg-white shadow rounded-xl p-4">
             <h2 className="font-semibold text-lg">{trip.title}</h2>
-            <p className="text-gray-500">{trip.destination}</p>
+            {/* Display items instead of single destination */}
+            {trip.items && trip.items.length > 0 ? (
+              <ul className="list-disc list-inside text-gray-500">
+                {trip.items.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-500">No items added</p>
+            )}
             <p className="text-sm text-gray-400">
               {trip.startDate?.slice(0, 10)} → {trip.endDate?.slice(0, 10)}
             </p>

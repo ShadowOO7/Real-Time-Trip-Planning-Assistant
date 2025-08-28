@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-export default function Slideshow({ images = [], interval = 3000, height = 400 }) {
+export default function Slideshow({ images = [], interval = 3000 }) {
   const [idx, setIdx] = useState(0);
   const timer = useRef(null);
   
@@ -14,8 +14,7 @@ export default function Slideshow({ images = [], interval = 3000, height = 400 }
 
   return (
     <div 
-      className="relative overflow-hidden rounded-lg shadow-lg" 
-      style={{ height: height }}
+      className="relative overflow-hidden rounded-lg shadow-lg h-64 md:h-80 lg:h-96"
     >
       {images.map((src, i) => (
         <img

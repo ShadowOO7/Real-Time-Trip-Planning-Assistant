@@ -3,7 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import tripRoutes from "./routes/trips.js";
-import { initSockets } from "./sockets/index.js";
+
 
 import authRoutes from './routes/auth.js';  // ✅ make sure this file exists
 

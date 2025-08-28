@@ -17,8 +17,8 @@ export default function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-50 to-white">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
+    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
+      <div className="max-w-md bg-white shadow-lg rounded-2xl p-8 border border-gray-200">
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
           Create Account
         </h2>

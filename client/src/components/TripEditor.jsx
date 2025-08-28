@@ -140,7 +140,7 @@ export default function TripEditor({ trip }) {
           ))}
 
           <div className="row" style={{marginTop:8}}>
-            <button onClick={optimize}>Optimize Order</button>
+            <button onClick={optimize}>Finalize Trip</button>
           </div>
           <RouteSummary items={items} />
         </div>

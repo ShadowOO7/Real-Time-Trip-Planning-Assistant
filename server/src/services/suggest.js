@@ -8,19 +8,23 @@ const email = process.env.NOMINATIM_EMAIL || "example@example.com";
  * Get up to `limit` interesting places near lat/lng.
  */
 export async function suggestNearby({ lat, lng, limit = 10 }) {
+  const delta = 0.1; // ~10km
+  const viewbox = [
+    lng - delta, lat + delta,
+    lng + delta, lat - delta
+  ].join(',');
+
   const res = await axios.get(`${base}/search`, {
     params: {
       format: "jsonv2",
-      q: "",
+      q: "tourism",
       featuretype: "point",
       addressdetails: 1,
       extratags: 1,
       dedupe: 1,
       limit,
-      // use 'viewbox' + 'bounded' to bias; here we use around via 'q' trick on categories:
-      // we'll just leverage 'around' with OS-specific providers is tricky; so use a category search by tagging:
-      // fallback: search common tourism categories by 'amenity'/'tourism' keywords around terms.
-      // Simpler approach: 'q' combined keywords + lat/lon via 'near' isn't official; so instead:
+      viewbox,
+      bounded: 1,
     },
     headers: { "User-Agent": `rtp-app/1.0 (${email})` }
   });

@@ -1,20 +1,20 @@
-import axios from "axios";
+import api from "./http";
 
 export const getTrips = async () => {
-  const res = await axios.get("/api/trips", { withCredentials: true });
+  const res = await api.get("/trips");
   return res.data;
 };
 
 export const createTrip = async (trip) => {
-  const res = await axios.post("/api/trips", trip, { withCredentials: true });
+  const res = await api.post("/trips", trip);
   return res.data;
 };
 
 export const updateTrip = async (id, trip) => {
-  const res = await axios.put(`/api/trips/${id}`, trip, { withCredentials: true });
+  const res = await api.put(`/trips/${id}`, trip);
   return res.data;
 };
 
 export const deleteTrip = async (id) => {
-  await axios.delete(`/api/trips/${id}`, { withCredentials: true });
+  await api.delete(`/trips/${id}`);
 };
